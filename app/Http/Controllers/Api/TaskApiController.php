@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\Api\TaskApiResource;
 use App\Services\TaskService;
+use Exception;
 use Illuminate\Http\Request;
 
 class TaskApiController extends Controller
@@ -39,9 +40,17 @@ class TaskApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        try {
+            $task = $this->task_service->create($request);
+            return new TaskApiResource($task);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'error_code' => $e->getCOde(),
+            ], 400);
+        }
     }
 
     /**
