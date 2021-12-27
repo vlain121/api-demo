@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ApiCreateTaskRequest;
 use App\Http\Resources\Api\TaskApiResource;
 use App\Services\TaskService;
 use Exception;
@@ -30,7 +31,7 @@ class TaskApiController extends Controller
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-                'error_code' => $e->getCode(),
+                'code' => $e->getCode(),
             ], 400);
         }
     }
@@ -40,15 +41,18 @@ class TaskApiController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create(Request $request)
+    public function create(ApiCreateTaskRequest $request)
     {
         try {
             $task = $this->task_service->create($request);
+            if (!$task) {
+                throw new Exception(__('app_exception.create.fail'));
+            }
             return new TaskApiResource($task);
         } catch (Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-                'error_code' => $e->getCOde(),
+                'code' => $e->getCode(),
             ], 400);
         }
     }
