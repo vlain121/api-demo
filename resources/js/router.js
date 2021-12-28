@@ -9,18 +9,18 @@ export default new Router({
         {
             name: 'dashboard',
             path: '/',
-            component: DashboardView
+            component: DashboardView,
         },
         {
             name: 'tasks',
             path: '/tasks',
-            component: TaskView
+            component: TaskView,
         },
         {
             name: 'login',
             path: '/login',
-            component: LoginView
-        }
+            component: LoginView,
+        },
 
-    ]
+    ],
 })
