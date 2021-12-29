@@ -16,4 +16,24 @@ final class TaskPrioType extends Enum
     const MEDIUM = 1;
     const HIGH = 2;
     const URGENT = 3;
+
+    public static function getLabel($value)
+    {
+        $result = '';
+        switch ($value) {
+            case self::LOW:
+                $result = 'Low';
+                break;
+            case self::MEDIUM:
+                $result = 'Medium';
+                break;
+            case self::HIGH:
+                $result = 'High';
+                break;
+            case self::URGENT:
+                $result = 'Urgent';
+                break;
+        }
+        return $result;
+    }
 }

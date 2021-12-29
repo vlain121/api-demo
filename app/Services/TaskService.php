@@ -5,6 +5,7 @@ use App\Models\Task;
 use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
 
 class TaskService
 {
@@ -24,7 +25,7 @@ class TaskService
     public function getList(Request $request)
     {
         try {
-            $result = $this->model->with(['categories', 'sub_tasks'])->paginate(5);
+            $result = $this->model->with(['categories', 'sub_tasks'])->get();
             return $result;
         } catch (Exception $e) {
             return null;
@@ -46,6 +47,7 @@ class TaskService
             DB::commit();
             return $task;
         } catch (Exception $e) {
+            Log::error($e->getMessage());
             DB::rollBack();
             return null;
         }

@@ -30,7 +30,7 @@ class ApiCreateTaskRequest extends FormRequest
         return [
             'title' => 'required',
             'desc' => 'nullable',
-            'due_date' => 'nullable|date_format:Y-m-d H:i:s',
+            'due_date' => 'nullable|date',
             'spent_time' => 'nullable|date_format:H:i:s',
             'status' => Rule::in(TaskStatusType::getValues()),
             'priority' => Rule::in(TaskPrioType::getValues()),
