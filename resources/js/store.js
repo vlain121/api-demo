@@ -5,9 +5,13 @@ export default new Vuex.Store({
     state: {
         breadcrumb: null,
         auth_user: null,
+        show_back: false,
 
     },
     mutations: {
+        setShowBack(state, data) {
+            state.show_back = data
+        },
         setBreadcrumb(state, data) {
             state.breadcrumb = data
         },
@@ -15,6 +19,9 @@ export default new Vuex.Store({
     actions: {
         setBreadcrumb({commit}, data) {
             commit('setBreadcrumb', data)
+        },
+        setShowBack({commit}, data) {
+            commit('setShowBack', data)
         },
     },
 })

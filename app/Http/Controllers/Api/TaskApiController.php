@@ -74,9 +74,17 @@ class TaskApiController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($id, Request $request)
     {
-        //
+        try {
+            $task = $this->task_service->find($id, $request);
+            return new TaskApiResource($task);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ], 400);
+        }
     }
 
     /**

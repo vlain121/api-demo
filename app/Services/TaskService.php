@@ -52,4 +52,15 @@ class TaskService
             return null;
         }
     }
+
+    public function find($id, Request $request)
+    {
+        try {
+            $task = $this->model->where('id', $id)->with(['sub_tasks'])->first();
+            return $task;
+        } catch (Exception $e) {
+            Log::error($e->getMessage());
+            return null;
+        }
+    }
 }

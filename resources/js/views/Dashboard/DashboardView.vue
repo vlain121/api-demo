@@ -319,9 +319,18 @@
     </div>
 </template>
 <script>
+import {mapActions} from 'vuex'
 export default {
-    setup() {
+    data() {
+        return {
 
+        }
+    },
+    mounted() {
+        this.setShowBack(false)
+    },
+    methods: {
+        ...mapActions(['setShowBack']),
     },
 }
 

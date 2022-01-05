@@ -22,5 +22,6 @@ Route::group([
     'prefix' => 'tasks',
 ], function () {
     Route::get('/', [TaskApiController::class, 'index']);
+    Route::get('detail/{id}', [TaskApiController::class, 'show']);
     Route::post('create', [TaskApiController::class, 'create']);
 });

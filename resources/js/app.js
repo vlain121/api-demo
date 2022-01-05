@@ -37,6 +37,8 @@ import ElementUI from 'element-ui'
 import locale from 'element-ui/lib/locale/lang/en'
 Vue.use(ElementUI, {locale})
 import 'element-ui/lib/theme-chalk/index.css'
+let Bus = new Vue()
+window.Bus = Bus
 const app = new Vue({
     router,
     store,

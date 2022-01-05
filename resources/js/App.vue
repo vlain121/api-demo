@@ -33,7 +33,9 @@
       <div class="page-breadcrumb bg-white">
         <div class="row align-items-center">
           <div class="col-lg-3 col-md-4 col-sm-4 col-xs-12">
-            <h4 class="page-title">{{ breadcrumb }}</h4>
+            <!-- <el-button @click="goBack" v-if="show_back">
+                <i class="el-icon-back"></i> Back
+            </el-button> -->
           </div>
           <div class="col-lg-9 col-sm-8 col-md-8 col-xs-12">
             <div class="d-md-flex">
@@ -87,17 +89,21 @@ export default {
         HeaderLayout,
     },
     computed: mapState({
+        show_back: (state) => state.show_back,
         breadcrumb: (state) => state.breadcrumb,
     }),
-    setup() {},
     mounted() {
         const route_name = String(this.$route.name).toString()
         this.setBreadcrumb(
             route_name.substring(0, 1).toUpperCase() + route_name.slice(1),
         )
+        window.Bus.$on('go-back', this.goBack)
     },
     methods: {
         ...mapActions(['setBreadcrumb']),
+        goBack() {
+            this.$router.back()
+        },
     },
     watch: {
         $route(value) {

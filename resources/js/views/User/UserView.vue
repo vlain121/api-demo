@@ -3,47 +3,56 @@
         <div class="row">
             <div class="col-sm-12">
                 <div class="white-box">
-                    <el-button type="primary" @click="addNewTask"><i class="el-icon-plus"></i>
-                        <span>Add</span></el-button>
+                    <el-button type="primary" @click="addNewTask">
+                        <i class="el-icon-plus"></i>
+                        <span>Add</span>
+                    </el-button>
                     <div class="table-responsive">
-                        <el-table style="width: 100%" :data="tasks" :row-class-name="tableRowClassName"
-                        @row-click="selecRow"
-                                    :lazy="true">
-                                    <el-table-column prop="id" label="ID" width="50px">
-                                    </el-table-column>
-                                    <el-table-column prop="title" label="Title">
-                                    </el-table-column>
-                                    <el-table-column prop="desc" label="Description">
-                                        <template slot-scope="scope">
-                                            {{ scope.row.desc ? scope.row.desc.substring(0, 20) + '...' : '' }}
-                                        </template>
-                                    </el-table-column>
-                                    <el-table-column prop="status_label" label="Status"
-                                    :filters="[
-                                        { text: 'New', value: 0 },
-                                        { text: 'Pending', value: 1 },
-                                        { text: 'Canceled', value: 2 },
-                                        { text: 'Done', value: 3 },
-                                    ]"
-                                    :filter-method="filterStatus"
-                                    filter-placement="bottom-end">
-                                    </el-table-column>
-                                    <el-table-column prop="priority_label" label="Priority"
-                                    :filters="[
-                                        { text: 'Low', value: 0 },
-                                        { text: 'Medium', value: 1 },
-                                        { text: 'High', value: 2 },
-                                        { text: 'Urgent', value: 3 },
-                                    ]"
-                                    :filter-method="filterPriority"
-                                    filter-placement="bottom-end">
-                                    </el-table-column>
-                                </el-table>
+                        <el-table style="width: 100%"
+                            :data="tasks"
+                            :row-class-name="tableRowClassName"
+                            :lazy="true"
+                        >
+                            <el-table-column prop="id" label="ID" width="50px">
+                                <template slot-scope="scope">
+                                    <a href="javascript:void(0)"
+                                        @click="viewTaskDetail(scope.row.id)">#{{ scope.row.id }}
+                                    </a>
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="title" label="Title">
+                            </el-table-column>
+                            <el-table-column prop="desc" label="Description">
+                                <template slot-scope="scope">
+                                    {{ scope.row.desc ? scope.row.desc.substring(0, 20) + '...' : '' }}
+                                </template>
+                            </el-table-column>
+                            <el-table-column prop="status_label" label="Status"
+                            :filters="[
+                                { text: 'New', value: 0 },
+                                { text: 'Pending', value: 1 },
+                                { text: 'Canceled', value: 2 },
+                                { text: 'Done', value: 3 },
+                            ]"
+                            :filter-method="filterStatus"
+                            filter-placement="bottom-end">
+                            </el-table-column>
+                            <el-table-column prop="priority_label" label="Priority"
+                            :filters="[
+                                { text: 'Low', value: 0 },
+                                { text: 'Medium', value: 1 },
+                                { text: 'High', value: 2 },
+                                { text: 'Urgent', value: 3 },
+                            ]"
+                            :filter-method="filterPriority"
+                            filter-placement="bottom-end">
+                            </el-table-column>
+                        </el-table>
                     </div>
                 </div>
             </div>
         </div>
-        <el-dialog title="Tips" :visible.sync="dialogVisible" :fullscreen="true" :before-close="beforeCloseModal">
+        <el-dialog title="Tips" :visible.sync="dialogVisible" width="70%" :before-close="beforeCloseModal">
             <el-form :model="form" :rules="form_rules" ref="task_form">
                 <div class="row">
                     <div class="col-12 mb-2">
@@ -61,13 +70,14 @@
 
                     <div class="col-12 mb-2 col-md-6">
                         <el-form-item label="Due date" prop="due_date">
-                            <el-date-picker v-model="form.due_date" format="yyyy-MM-dd HH:mm:ss" type="datetime">
+                            <el-date-picker v-model="form.due_date" format="yyyy-MM-dd HH:mm:ss" type="datetime"
+                            :clearable="true">
                             </el-date-picker>
                         </el-form-item>
                     </div>
                     <div class="col-12 mb-2 col-md-6">
                         <el-form-item label="Spent time" prop="spent_time">
-                            <el-time-picker v-model="form.spent_time">
+                            <el-time-picker v-model="form.spent_time"  :clearable="true">
                             </el-time-picker>
                         </el-form-item>
                     </div>
@@ -94,8 +104,8 @@
                         <br>
                         <div class="form-group" v-for="(item, index) in sub_tasks" :key="index">
                             <div class="d-flex flex-row align-items-center">
-                                <input type="checkbox" name="" id="" style="margin-right: 10px">
-                                <el-input v-model="item.value"></el-input>
+                                <input type="checkbox" name="" v-model="item.status" id="" style="margin-right: 10px">
+                                <el-input v-model="item.title"></el-input>
                                 <a href="javascript:void(0)" class="text-danger" @click="removeChecklistItem(index)">
                                     <i class="el-icon-close" style="margin-left: 10px"></i>
                                 </a>
@@ -112,7 +122,8 @@
     </div>
 </template>
 <script>
-import TaskApi from '../api/task'
+import {mapActions} from 'vuex'
+import TaskApi from '../../api/task'
 export default {
     data() {
         return {
@@ -172,13 +183,13 @@ export default {
                     message: 'Description is required',
                 }],
                 due_date: [{
-                    type: 'date',
+                    type: 'string',
                     required: false,
                     message: 'Please pick a date',
                     trigger: 'change',
                 }],
                 spent_time: [{
-                    type: 'date',
+                    type: 'string',
                     required: false,
                     message: 'Please pick time',
                     trigger: 'change',
@@ -197,15 +208,18 @@ export default {
     },
     mounted() {
         this.getAllTasks()
+        this.setShowBack(false)
     },
     methods: {
+        ...mapActions(['setShowBack']),
         handleClick(tab, event) {
             console.log(tab, event)
         },
         addTaskToChecklist() {
             this.sub_tasks.push({
+                id: null,
                 status: false,
-                value: null,
+                title: null,
             })
         },
         removeChecklistItem(index) {
@@ -226,9 +240,22 @@ export default {
                         sub_tasks: this.sub_tasks.filter((e) => e.value != '' && e.value != null),
                     }
                     TaskApi.create(this.form, (data) => {
-                        this.dialogVisible = false
-                        console.log(data)
+                        // this.dialogVisible = false
+                        this.resetFormFields()
+                        this.$notify({
+                            title: 'Success',
+                            message: 'Your changes have been saved',
+                            position: 'bottom-right',
+                            type: 'success',
+                        })
                     }, (error) => {
+                        this.$notify({
+                            title: 'Success',
+                            message: 'Your changes have been saved',
+                            position: 'bottom-right',
+                            type: 'error',
+
+                        })
                         console.error(error)
                     })
                 } else {
@@ -237,7 +264,9 @@ export default {
             })
         },
         resetFormFields() {
-            this.$refs['task_form'].resetFields()
+            if (this.$refs['task_form']) {
+                this.$refs['task_form'].resetFields()
+            }
         },
         resetForm() {
             this.form = {
@@ -272,14 +301,23 @@ export default {
         filterStatus(value, row) {
             return row.status === value
         },
-        selecRow(row, column, event) {
-            this.form = row
-            this.dialogVisible = true
-        },
+        // selecRow(row, column, event) {
+        //     this.form = row
+        //     this.dialogVisible = true
+        // },
         addNewTask() {
             this.dialogVisible = true
             this.resetForm()
             this.resetFormFields()
+        },
+        viewTaskDetail(id) {
+            this.dialogVisible = true
+            TaskApi.getDetail(id, (data) => {
+                this.form = data.data
+                this.sub_tasks = data.data.sub_tasks
+            }, (error) => {
+                console.error(error)
+            })
         },
     },
 }
