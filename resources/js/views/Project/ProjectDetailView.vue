@@ -52,12 +52,13 @@
     </div>
 </template>
 <script>
-import { mapActions, mapState } from 'vuex'
+import {mapActions, mapState} from 'vuex'
 export default {
     data() {
         return {
             activeName: 'first',
             form: {
+                id: null,
                 title: null,
                 desc: null,
             },
@@ -74,13 +75,28 @@ export default {
         }
     },
     computed: {
-        
+        ...mapState({
+            current_route_name: (state) => state.current_route_name,
+        }),
     },
     mounted() {
+        switch (this.current_route_name) {
+        case 'project_create':
+
+            break
+        case 'project_detail':
+            const slug = this.$route.params.slug
+            console.log(slug)
+            break
+
+        default:
+            break
+        }
+
         this.setShowBack(true)
     },
     methods: {
-        ...mapActions(['setShowBack']),
+        ...mapActions(['setShowBack', 'setCurrentRouteName']),
         getProject(slug) {
 
         },

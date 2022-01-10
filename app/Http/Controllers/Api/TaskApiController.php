@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\ApiCreateTaskRequest;
 use App\Http\Resources\Api\TaskApiResource;
-use App\Services\TaskService;
+use App\Services\Api\TaskService;
 use Exception;
 use Illuminate\Http\Request;
 

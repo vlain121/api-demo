@@ -100,13 +100,14 @@ export default {
         window.Bus.$on('go-back', this.goBack)
     },
     methods: {
-        ...mapActions(['setBreadcrumb']),
+        ...mapActions(['setBreadcrumb', 'setCurrentRouteName']),
         goBack() {
             this.$router.back()
         },
     },
     watch: {
         $route(value) {
+            this.setCurrentRouteName(value.name)
             this.setBreadcrumb(
                 value.name.substring(0, 1).toUpperCase() + value.name.slice(1),
             )

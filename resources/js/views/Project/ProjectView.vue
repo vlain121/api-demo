@@ -57,7 +57,7 @@ export default {
             this.$router.push({
                 name: 'project_create',
             })
-        }
+        },
     },
 }
 

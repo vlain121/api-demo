@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Api\ProjectApiController;
 use App\Http\Controllers\Api\TaskApiController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
@@ -24,4 +25,10 @@ Route::group([
     Route::get('/', [TaskApiController::class, 'index']);
     Route::get('detail/{id}', [TaskApiController::class, 'show']);
     Route::post('create', [TaskApiController::class, 'create']);
+});
+
+Route::group([
+    'prefix' => 'projects',
+], function () {
+    Route::get('/', [ProjectApiController::class, 'index']);
 });

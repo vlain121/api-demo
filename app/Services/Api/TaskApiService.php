@@ -1,5 +1,5 @@
 <?php
-namespace App\Services;
+namespace App\Services\Api;
 
 use App\Models\Task;
 use Exception;
