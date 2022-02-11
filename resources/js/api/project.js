@@ -31,4 +31,13 @@ export default {
             }
         })
     },
+    update(form, completion, error) {
+        axios.put(`${uri}/update/${form.id}`, form).then((response) => {
+            completion(response.data)
+        }).catch((err) => {
+            if (err) {
+                error(err)
+            }
+        })
+    },
 }

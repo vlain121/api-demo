@@ -40,4 +40,25 @@ class ProjectApiService
             return null;
         }
     }
+
+    public function update($id, Request $request)
+    {
+        try {
+            $project = Project::find($id);
+            $project->update($request->all());
+            return $project;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
+
+    public function detail($slug)
+    {
+        try {
+            $project = Project::where('slug', $slug)->first();
+            return $project;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
 }

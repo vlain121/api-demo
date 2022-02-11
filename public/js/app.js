@@ -4518,35 +4518,77 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     }
   })),
   mounted: function mounted() {
-    switch (this.current_route_name) {
-      case 'project_create':
-        break;
-
-      case 'project_detail':
-        var slug = this.$route.params.slug;
-        console.log(slug);
-        break;
-
-      default:
-        break;
+    if (this.$route.params.slug) {
+      this.getProject(this.$route.params.slug);
     }
 
     this.setShowBack(true);
   },
   methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)(['setShowBack', 'setCurrentRouteName'])), {}, {
-    getProject: function getProject(slug) {},
-    handleClick: function handleClick(tab, event) {
-      console.log(tab, event);
-    },
-    saveProject: function saveProject() {
-      _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].create(this.form, function (data) {
-        console.log(data);
+    getProject: function getProject(slug) {
+      var _this = this;
+
+      _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].getDetail(slug, function (data) {
+        _this.form = {
+          id: data.data.id,
+          name: data.data.name,
+          description: data.data.description
+        };
       }, function (error) {
         console.log(error);
       });
     },
+    handleClick: function handleClick(tab, event) {
+      console.log(tab, event);
+    },
+    saveProject: function saveProject() {
+      var _this2 = this;
+
+      if (this.form.id) {
+        _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].update(this.form, function (data) {
+          console.log(data);
+
+          _this2.$notify({
+            title: 'Success',
+            message: 'This is a success message',
+            type: 'success'
+          });
+        }, function (error) {
+          _this2.$notify.error({
+            title: 'Error',
+            message: 'This is an error message'
+          });
+
+          console.log(error);
+        });
+      } else {
+        _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].create(this.form, function (data) {
+          _this2.resetForm();
+
+          _this2.$notify({
+            title: 'Success',
+            message: 'This is a success message',
+            type: 'success'
+          });
+        }, function (error) {
+          _this2.$notify.error({
+            title: 'Error',
+            message: 'This is an error message'
+          });
+
+          console.log(error);
+        });
+      }
+    },
     goBack: function goBack() {
       window.Bus.$emit('go-back');
+    },
+    resetForm: function resetForm() {
+      this.form = {
+        id: null,
+        name: null,
+        description: null
+      };
     }
   })
 });
@@ -4611,7 +4653,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var _this = this;
 
       _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].getAll(params, function (data) {
-        _this.projects = data;
+        _this.projects = data.data;
       }, function (error) {
         console.log(error);
       });
@@ -5614,6 +5656,15 @@ var uri = '/api/projects';
   },
   create: function create(form, completion, error) {
     axios__WEBPACK_IMPORTED_MODULE_0___default().post("".concat(uri, "/create"), form).then(function (response) {
+      completion(response.data);
+    })["catch"](function (err) {
+      if (err) {
+        error(err);
+      }
+    });
+  },
+  update: function update(form, completion, error) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().put("".concat(uri, "/update/").concat(form.id), form).then(function (response) {
       completion(response.data);
     })["catch"](function (err) {
       if (err) {

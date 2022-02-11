@@ -81,17 +81,8 @@ export default {
         }),
     },
     mounted() {
-        switch (this.current_route_name) {
-        case 'project_create':
-
-            break
-        case 'project_detail':
-            const slug = this.$route.params.slug
-            console.log(slug)
-            break
-
-        default:
-            break
+        if (this.$route.params.slug) {
+            this.getProject(this.$route.params.slug)
         }
 
         this.setShowBack(true)
@@ -99,20 +90,61 @@ export default {
     methods: {
         ...mapActions(['setShowBack', 'setCurrentRouteName']),
         getProject(slug) {
-
+            ProjectApi.getDetail(slug, (data) => {
+                this.form = {
+                    id: data.data.id,
+                    name: data.data.name,
+                    description: data.data.description,
+                }
+            }, (error) => {
+                console.log(error)
+            })
         },
         handleClick(tab, event) {
             console.log(tab, event)
         },
         saveProject() {
-            ProjectApi.create(this.form, (data) => {
-                console.log(data)
-            }, (error) => {
-                console.log(error)
-            })
+            if (this.form.id) {
+                ProjectApi.update(this.form, (data) => {
+                    console.log(data)
+                    this.$notify({
+                        title: 'Success',
+                        message: 'This is a success message',
+                        type: 'success',
+                    })
+                }, (error) => {
+                    this.$notify.error({
+                        title: 'Error',
+                        message: 'This is an error message',
+                    })
+                    console.log(error)
+                })
+            } else {
+                ProjectApi.create(this.form, (data) => {
+                    this.resetForm()
+                    this.$notify({
+                        title: 'Success',
+                        message: 'This is a success message',
+                        type: 'success',
+                    })
+                }, (error) => {
+                    this.$notify.error({
+                        title: 'Error',
+                        message: 'This is an error message',
+                    })
+                    console.log(error)
+                })
+            }
         },
         goBack() {
             window.Bus.$emit('go-back')
+        },
+        resetForm() {
+            this.form = {
+                id: null,
+                name: null,
+                description: null,
+            }
         },
     },
 }

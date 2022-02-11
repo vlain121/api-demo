@@ -47,4 +47,30 @@ class ProjectApiController extends Controller
             ], 400);
         }
     }
+
+    public function update($id, Request $request)
+    {
+        try {
+            $project = $this->project_api_service->update($id, $request);
+            return new ProjectApiResource($project);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ], 400);
+        }
+    }
+
+    public function detail($id)
+    {
+        try {
+            $project = $this->project_api_service->detail($id);
+            return new ProjectApiResource($project);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ], 400);
+        }
+    }
 }

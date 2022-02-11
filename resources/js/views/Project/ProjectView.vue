@@ -37,7 +37,7 @@ export default {
         ...mapActions(['setShowBack']),
         getProjects(params) {
             ProjectApi.getAll(params, (data) => {
-                this.projects = data
+                this.projects = data.data
             }, (error) => {
                 console.log(error)
             })

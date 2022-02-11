@@ -32,4 +32,6 @@ Route::group([
 ], function () {
     Route::get('/', [ProjectApiController::class, 'index']);
     Route::post('create', [ProjectApiController::class, 'create']);
+    Route::put('update/{id}', [ProjectApiController::class, 'update']);
+    Route::get('detail/{id}', [ProjectApiController::class, 'detail']);
 });
