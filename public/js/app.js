@@ -4554,12 +4554,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             type: 'success'
           });
         }, function (error) {
-          _this2.$notify.error({
-            title: 'Error',
-            message: 'This is an error message'
-          });
-
-          console.log(error);
+          if (error.response.status == 422) {
+            _this2.$notify.error({
+              title: 'Error',
+              message: error.response.data.message
+            });
+          } else {
+            _this2.$notify.error({
+              title: 'Error',
+              message: error.statusText
+            });
+          }
         });
       } else {
         _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].create(this.form, function (data) {
@@ -4571,12 +4576,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
             type: 'success'
           });
         }, function (error) {
-          _this2.$notify.error({
-            title: 'Error',
-            message: 'This is an error message'
-          });
-
-          console.log(error);
+          if (error.response.status == 422) {
+            _this2.$notify.error({
+              title: 'Error',
+              message: error.response.data.message
+            });
+          } else {
+            _this2.$notify.error({
+              title: 'Error',
+              message: error.statusText
+            });
+          }
         });
       }
     },

@@ -113,11 +113,17 @@ export default {
                         type: 'success',
                     })
                 }, (error) => {
-                    this.$notify.error({
-                        title: 'Error',
-                        message: 'This is an error message',
-                    })
-                    console.log(error)
+                    if (error.response.status == 422) {
+                        this.$notify.error({
+                            title: 'Error',
+                            message: error.response.data.message,
+                        })
+                    } else {
+                        this.$notify.error({
+                            title: 'Error',
+                            message: error.statusText,
+                        })
+                    }
                 })
             } else {
                 ProjectApi.create(this.form, (data) => {
@@ -128,11 +134,17 @@ export default {
                         type: 'success',
                     })
                 }, (error) => {
-                    this.$notify.error({
-                        title: 'Error',
-                        message: 'This is an error message',
-                    })
-                    console.log(error)
+                    if (error.response.status == 422) {
+                        this.$notify.error({
+                            title: 'Error',
+                            message: error.response.data.message,
+                        })
+                    } else {
+                        this.$notify.error({
+                            title: 'Error',
+                            message: error.statusText,
+                        })
+                    }
                 })
             }
         },
