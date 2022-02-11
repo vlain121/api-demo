@@ -28,4 +28,23 @@ class ProjectApiController extends Controller
             ], 400);
         }
     }
+
+    /**
+     *
+     *
+     * @param Request $request
+     * @return void
+     */
+    public function create(Request $request)
+    {
+        try {
+            $project = $this->project_api_service->create($request);
+            return new ProjectApiResource($project);
+        } catch (Exception $e) {
+            return response()->json([
+                'message' => $e->getMessage(),
+                'code' => $e->getCode(),
+            ], 400);
+        }
+    }
 }

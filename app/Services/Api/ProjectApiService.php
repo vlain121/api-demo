@@ -24,4 +24,20 @@ class ProjectApiService
             return null;
         }
     }
+
+    /**
+     *
+     *
+     * @param Request $request
+     * @return App\Model\Projec|null
+     */
+    public function create(Request $request)
+    {
+        try {
+            $project = Project::insert($request->all());
+            return $project;
+        } catch (Exception $e) {
+            return null;
+        }
+    }
 }

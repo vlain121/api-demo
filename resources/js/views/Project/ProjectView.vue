@@ -22,29 +22,26 @@
 </template>
 <script>
 import {mapActions} from 'vuex'
+import ProjectApi from '../../api/project'
 export default {
     data() {
         return {
-            projects: [{
-                id: 1,
-                name: 'Project A',
-                slug: 'project-a',
-                description: 'Lorem ipsum dolor sit amet',
-            },
-            {
-                id: 2,
-                name: 'Project B',
-                slug: 'project-b',
-                description: 'Lorem ipsum dolor sit amet',
-            },
-            ],
+            projects: [],
         }
     },
     mounted() {
         this.setShowBack(false)
+        this.getProjects()
     },
     methods: {
         ...mapActions(['setShowBack']),
+        getProjects(params) {
+            ProjectApi.getAll(params, (data) => {
+                this.projects = data
+            }, (error) => {
+                console.log(error)
+            })
+        },
         viewProjectDetail(slug) {
             this.$router.push({
                 name: 'project_detail',

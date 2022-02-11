@@ -16,6 +16,7 @@ namespace App\Models\Base;
  * @property string $description
  * @property \Carbon\Carbon $created_at
  * @property \Carbon\Carbon $updated_at
+ * @property string $slug
  *
  * @package App\Models\Base
  */
@@ -23,6 +24,7 @@ class Project extends \Illuminate\Database\Eloquent\Model
 {
 	protected $fillable = [
 		'name',
-		'description'
+		'description',
+		'slug'
 	];
 }

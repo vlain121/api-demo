@@ -1,6 +1,6 @@
 import axios from 'axios'
 
-const uri = 'api/projects'
+const uri = '/api/projects'
 export default {
     getAll(params, completion, error) {
         axios.get(uri, {

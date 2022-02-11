@@ -4428,7 +4428,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _api_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/project */ "./resources/js/api/project.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -4489,28 +4490,29 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
       activeName: 'first',
       form: {
         id: null,
-        title: null,
-        desc: null
+        name: null,
+        description: null
       },
       form_rules: {
-        title: [{
+        name: [{
           required: true,
-          message: 'Title is required'
+          message: 'Name is required'
         }],
-        desc: [{
+        description: [{
           required: true,
           message: 'Description is required'
         }]
       }
     };
   },
-  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapState)({
+  computed: _objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapState)({
     current_route_name: function current_route_name(state) {
       return state.current_route_name;
     }
@@ -4531,10 +4533,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
     this.setShowBack(true);
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(['setShowBack', 'setCurrentRouteName'])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)(['setShowBack', 'setCurrentRouteName'])), {}, {
     getProject: function getProject(slug) {},
     handleClick: function handleClick(tab, event) {
       console.log(tab, event);
+    },
+    saveProject: function saveProject() {
+      _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].create(this.form, function (data) {
+        console.log(data);
+      }, function (error) {
+        console.log(error);
+      });
     },
     goBack: function goBack() {
       window.Bus.$emit('go-back');
@@ -4555,7 +4564,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony export */ __webpack_require__.d(__webpack_exports__, {
 /* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
 /* harmony export */ });
-/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var vuex__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vuex */ "./node_modules/vuex/dist/vuex.esm.js");
+/* harmony import */ var _api_project__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../../api/project */ "./resources/js/api/project.js");
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); enumerableOnly && (symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; })), keys.push.apply(keys, symbols); } return keys; }
 
 function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = null != arguments[i] ? arguments[i] : {}; i % 2 ? ownKeys(Object(source), !0).forEach(function (key) { _defineProperty(target, key, source[key]); }) : Object.getOwnPropertyDescriptors ? Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)) : ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } return target; }
@@ -4585,26 +4595,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 
+
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
   data: function data() {
     return {
-      projects: [{
-        id: 1,
-        name: 'Project A',
-        slug: 'project-a',
-        description: 'Lorem ipsum dolor sit amet'
-      }, {
-        id: 2,
-        name: 'Project B',
-        slug: 'project-b',
-        description: 'Lorem ipsum dolor sit amet'
-      }]
+      projects: []
     };
   },
   mounted: function mounted() {
     this.setShowBack(false);
+    this.getProjects();
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_0__.mapActions)(['setShowBack'])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)(['setShowBack'])), {}, {
+    getProjects: function getProjects(params) {
+      var _this = this;
+
+      _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].getAll(params, function (data) {
+        _this.projects = data;
+      }, function (error) {
+        console.log(error);
+      });
+    },
     viewProjectDetail: function viewProjectDetail(slug) {
       this.$router.push({
         name: 'project_detail',
@@ -5561,6 +5572,55 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       });
     }
   })
+});
+
+/***/ }),
+
+/***/ "./resources/js/api/project.js":
+/*!*************************************!*\
+  !*** ./resources/js/api/project.js ***!
+  \*************************************/
+/***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export */ __webpack_require__.d(__webpack_exports__, {
+/* harmony export */   "default": () => (__WEBPACK_DEFAULT_EXPORT__)
+/* harmony export */ });
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! axios */ "./node_modules/axios/index.js");
+/* harmony import */ var axios__WEBPACK_IMPORTED_MODULE_0___default = /*#__PURE__*/__webpack_require__.n(axios__WEBPACK_IMPORTED_MODULE_0__);
+
+var uri = '/api/projects';
+/* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
+  getAll: function getAll(params, completion, error) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get(uri, {
+      params: params
+    }).then(function (response) {
+      completion(response.data);
+    })["catch"](function (err) {
+      if (err) {
+        error(err);
+      }
+    });
+  },
+  getDetail: function getDetail(id, completion, error) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().get("".concat(uri, "/detail/").concat(id)).then(function (response) {
+      completion(response.data);
+    })["catch"](function (err) {
+      if (err) {
+        error(err);
+      }
+    });
+  },
+  create: function create(form, completion, error) {
+    axios__WEBPACK_IMPORTED_MODULE_0___default().post("".concat(uri, "/create"), form).then(function (response) {
+      completion(response.data);
+    })["catch"](function (err) {
+      if (err) {
+        error(err);
+      }
+    });
+  }
 });
 
 /***/ }),
@@ -87985,9 +88045,11 @@ var render = function () {
               _vm._v(" Back\n                "),
             ]),
             _vm._v(" "),
-            _c("el-button", { attrs: { type: "primary" } }, [
-              _c("span", [_vm._v("Save")]),
-            ]),
+            _c(
+              "el-button",
+              { attrs: { type: "primary" }, on: { click: _vm.saveProject } },
+              [_c("span", [_vm._v("Save")])]
+            ),
           ],
           1
         ),
@@ -88014,15 +88076,15 @@ var render = function () {
                     [
                       _c(
                         "el-form-item",
-                        { attrs: { label: "Title", prop: "title" } },
+                        { attrs: { label: "Name", prop: "name" } },
                         [
                           _c("el-input", {
                             model: {
-                              value: _vm.form.title,
+                              value: _vm.form.name,
                               callback: function ($$v) {
-                                _vm.$set(_vm.form, "title", $$v)
+                                _vm.$set(_vm.form, "name", $$v)
                               },
-                              expression: "form.title",
+                              expression: "form.name",
                             },
                           }),
                         ],
@@ -88038,16 +88100,18 @@ var render = function () {
                     [
                       _c(
                         "el-form-item",
-                        { attrs: { label: "Description", prop: "desc" } },
+                        {
+                          attrs: { label: "Description", prop: "description " },
+                        },
                         [
                           _c("el-input", {
                             attrs: { type: "textarea", rows: 2 },
                             model: {
-                              value: _vm.form.desc,
+                              value: _vm.form.description,
                               callback: function ($$v) {
-                                _vm.$set(_vm.form, "desc", $$v)
+                                _vm.$set(_vm.form, "description", $$v)
                               },
-                              expression: "form.desc",
+                              expression: "form.description",
                             },
                           }),
                         ],

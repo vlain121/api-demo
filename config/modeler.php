@@ -25,7 +25,7 @@ return [
         |
          */
 
-        'path' => app_path('Models\Base'),
+        'path' => app_path('Models/Base'),
 
         'path_connection' => false,
 

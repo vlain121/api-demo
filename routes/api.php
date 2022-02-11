@@ -31,4 +31,5 @@ Route::group([
     'prefix' => 'projects',
 ], function () {
     Route::get('/', [ProjectApiController::class, 'index']);
+    Route::post('create', [ProjectApiController::class, 'create']);
 });
