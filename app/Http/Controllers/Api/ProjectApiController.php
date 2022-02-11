@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Api\ApiCreateProjectRequest;
 use App\Http\Resources\Api\ProjectApiResource;
 use App\Services\Api\ProjectApiService;
 use Exception;
@@ -35,7 +36,7 @@ class ProjectApiController extends Controller
      * @param Request $request
      * @return void
      */
-    public function create(Request $request)
+    public function create(ApiCreateProjectRequest $request)
     {
         try {
             $project = $this->project_api_service->create($request);
@@ -48,7 +49,7 @@ class ProjectApiController extends Controller
         }
     }
 
-    public function update($id, Request $request)
+    public function update($id, ApiCreateProjectRequest $request)
     {
         try {
             $project = $this->project_api_service->update($id, $request);
