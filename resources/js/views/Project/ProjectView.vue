@@ -9,7 +9,9 @@
                 </div>
             </div>
             <div class="row">
-                <div class="col-12 col-md-4" v-for="(project, index) in projects" :key="`project_${index}`">
+                <div class="col-12 col-md-4"
+                    v-for="(project, index) in projects"
+                    :key="`project_${index}`">
                     <div class="white-box">
                         <a class="h3" href="javascript:void(0)" @click="viewProjectDetail(project.slug)">
                             {{ project.name }}
@@ -34,12 +36,15 @@ export default {
         this.getProjects()
     },
     methods: {
-        ...mapActions(['setShowBack']),
+        ...mapActions(['setShowBack', 'setLoading']),
         getProjects(params) {
+            this.setLoading(true)
             ProjectApi.getAll(params, (data) => {
                 this.projects = data.data
+                this.setLoading(false)
             }, (error) => {
                 console.log(error)
+                this.setLoading(false)
             })
         },
         viewProjectDetail(slug) {

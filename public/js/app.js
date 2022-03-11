@@ -3833,6 +3833,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     HeaderLayout: _layouts_HeaderLayout_vue__WEBPACK_IMPORTED_MODULE_1__["default"]
   },
   computed: (0,vuex__WEBPACK_IMPORTED_MODULE_2__.mapState)({
+    loading: function loading(state) {
+      return state.loading;
+    },
     show_back: function show_back(state) {
       return state.show_back;
     },
@@ -4646,6 +4649,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
 
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -4658,14 +4663,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     this.setShowBack(false);
     this.getProjects();
   },
-  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)(['setShowBack'])), {}, {
+  methods: _objectSpread(_objectSpread({}, (0,vuex__WEBPACK_IMPORTED_MODULE_1__.mapActions)(['setShowBack', 'setLoading'])), {}, {
     getProjects: function getProjects(params) {
       var _this = this;
 
+      this.setLoading(true);
       _api_project__WEBPACK_IMPORTED_MODULE_0__["default"].getAll(params, function (data) {
         _this.projects = data.data;
+
+        _this.setLoading(false);
       }, function (error) {
         console.log(error);
+
+        _this.setLoading(false);
       });
     },
     viewProjectDetail: function viewProjectDetail(slug) {
@@ -5924,9 +5934,13 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
     breadcrumb: null,
     auth_user: null,
     show_back: false,
-    current_route_name: null
+    current_route_name: null,
+    loading: false
   },
   mutations: {
+    setLoading: function setLoading(state, data) {
+      state.loading = data;
+    },
     setShowBack: function setShowBack(state, data) {
       state.show_back = data;
     },
@@ -5938,16 +5952,20 @@ vue__WEBPACK_IMPORTED_MODULE_0__["default"].use(vuex__WEBPACK_IMPORTED_MODULE_1_
     }
   },
   actions: {
-    setBreadcrumb: function setBreadcrumb(_ref, data) {
+    setLoading: function setLoading(_ref, data) {
       var commit = _ref.commit;
+      commit('setLoading', data);
+    },
+    setBreadcrumb: function setBreadcrumb(_ref2, data) {
+      var commit = _ref2.commit;
       commit('setBreadcrumb', data);
     },
-    setShowBack: function setShowBack(_ref2, data) {
-      var commit = _ref2.commit;
+    setShowBack: function setShowBack(_ref3, data) {
+      var commit = _ref3.commit;
       commit('setShowBack', data);
     },
-    setCurrentRouteName: function setCurrentRouteName(_ref3, data) {
-      var commit = _ref3.commit;
+    setCurrentRouteName: function setCurrentRouteName(_ref4, data) {
+      var commit = _ref4.commit;
       commit('setCurrentRouteName', data);
     }
   }
@@ -86827,7 +86845,17 @@ var render = function () {
       _vm._v(" "),
       _c(
         "div",
-        { staticClass: "page-wrapper" },
+        {
+          directives: [
+            {
+              name: "loading",
+              rawName: "v-loading",
+              value: _vm.loading,
+              expression: "loading",
+            },
+          ],
+          staticClass: "page-wrapper",
+        },
         [
           _c("div", { staticClass: "page-breadcrumb bg-white" }, [
             _c("div", { staticClass: "row align-items-center" }, [

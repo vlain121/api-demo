@@ -7,8 +7,12 @@ export default new Vuex.Store({
         auth_user: null,
         show_back: false,
         current_route_name: null,
+        loading: false,
     },
     mutations: {
+        setLoading(state, data) {
+            state.loading = data
+        },
         setShowBack(state, data) {
             state.show_back = data
         },
@@ -20,6 +24,9 @@ export default new Vuex.Store({
         },
     },
     actions: {
+        setLoading({commit}, data) {
+            commit('setLoading', data)
+        },
         setBreadcrumb({commit}, data) {
             commit('setBreadcrumb', data)
         },

@@ -26,7 +26,7 @@
     <!-- ============================================================== -->
     <!-- Page wrapper  -->
     <!-- ============================================================== -->
-    <div class="page-wrapper">
+    <div class="page-wrapper" v-loading="loading">
       <!-- ============================================================== -->
       <!-- Bread crumb and right sidebar toggle -->
       <!-- ============================================================== -->
@@ -89,6 +89,7 @@ export default {
         HeaderLayout,
     },
     computed: mapState({
+        loading: (state) => state.loading,
         show_back: (state) => state.show_back,
         breadcrumb: (state) => state.breadcrumb,
     }),
