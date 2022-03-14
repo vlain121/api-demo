@@ -14,7 +14,7 @@ return [
      */
 
     'name' => env('APP_NAME', 'Laravel'),
-
+    'is_heroku' => env('IS_HEROKU'),
     /*
     |--------------------------------------------------------------------------
     | Application Environment
